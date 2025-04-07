@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body text-center">
+        <h3 class="card-title">🎉 Registration Successful!</h3>
+        <div class="my-4">
+            <img src="{{ registration.qr_code.url }}" 
+                 alt="Event QR Code" 
+                 class="img-fluid"
+                 style="max-width: 250px;">
+        </div>
+        <div class="alert alert-info">
+            <h5>Event Details</h5>
+            <p class="mb-1"><strong>Event:</strong> {{ registration.event.title }}</p>
+            <p class="mb-1"><strong>Seat Number:</strong> {{ registration.seat_number }}</p>
+            <p class="mb-1"><strong>Unique Code:</strong> {{ registration.unique_code }}</p>
+        </div>
+        <button class="btn btn-success" onclick="window.print()">
+            Print Ticket
+        </button>
+        <a href="{% url 'home' %}" class="btn btn-primary">
+            Back to Events
+        </a>
+    </div>
+</div>
+{% endblock %}

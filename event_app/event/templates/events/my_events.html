@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}My Events{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">My Registered Events</h2>
+    
+    {% if registrations %}
+        <div class="row">
+            {% for registration in registrations %}
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ registration.event.title }}</h5>
+                            <p class="card-text">
+                                <strong>Date & Time:</strong> {{ registration.event.datetime|date:"M d, Y H:i" }}<br>
+                                <strong>Venue:</strong> {{ registration.event.venue }}<br>
+                                <strong>Seat Number:</strong> {{ registration.seat_number }}
+                            </p>
+                            <hr>
+                            <p>
+                                <strong>Registration Code:</strong> {{ registration.unique_code }}
+                            </p>
+                            {% if registration.qr_code %}
+                                <img src="{{ registration.qr_code.url }}" alt="QR Code" class="img-fluid" style="max-width: 200px;">
+                            {% else %}
+                                <p>No QR code available.</p>
+                            {% endif %}
+                            <hr>
+                            <!-- Reminder Button -->
+                            <form method="post" action="{% url 'send_reminder' registration.event.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-warning">Set Reminder</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You have not registered for any events yet.</p>
+    {% endif %}
+</div>
+{% endblock %}
